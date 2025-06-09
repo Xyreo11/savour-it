@@ -19,7 +19,7 @@ const UpdatePassword = () => {
 
     try {
       const response = await fetch(
-        "https://recipe-app-mern.onrender.com/auth/forgotpassword",
+        "http://localhost:5000/auth/forgotpassword",
         {
           method: "PUT",
           headers: {
@@ -36,7 +36,7 @@ const UpdatePassword = () => {
 
         setTimeout(() => {
           window.location.href = "/login";
-        }, 4000);
+        }, 1000);
       } else {
         setMessage("An error occurred while updating the password.");
         toast.error("Error in Password update");

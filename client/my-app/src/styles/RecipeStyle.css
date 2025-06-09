@@ -15,131 +15,91 @@
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: calc(33.33% - 20px); /* Three columns with 20px gap */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Recipe:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for recipe image */
+.recipe-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
 }
 
 /* Style for recipe title */
 .Recipe h2 {
-  font-size: 20px;
-  margin-top: 0;
+  font-family: 'Great Vibes', cursive; /* Elegant script font */
+  font-size: 2.5rem; /* Larger size to showcase the calligraphy effect */
+  margin-top: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333; /* Deep color for readability */
+  letter-spacing: 1px; /* Slight spacing to enhance elegance */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  font-weight: 400; /* Lighter weight typical of calligraphy */
+  line-height: 1.2;
+}
+/* Expanded recipe card styles */
+.Recipe.expanded {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  z-index: 1000;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.recipe-details {
+  padding: 20px;
+}
+
+.recipe-details h3 {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+.recipe-details p {
   margin-bottom: 10px;
 }
 
-/* Style for recipe image */
-.Recipe img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
+.instructions-container {
+  max-height: 200px;
+  overflow-y: auto;
 }
 
-/* Style for ingredients list */
-.Recipe h3 {
-  font-size: 16px;
-  margin: 10px 0;
-}
-
-.Recipe ul {
-  list-style-type: disc;
-  margin-left: 20px;
-  padding-left: 10px;
-}
-
-/* Style for instructions */
-.Recipe p {
-  font-size: 14px;
-  line-height: 1.4;
-  margin-top: 10px;
-}
-
-/* Styling for regular links */
-.Recipe a {
-  color: #007bff; /* Default link color */
-  text-decoration: none; /* Remove underlines */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
-  margin-left: 1rem;
-}
-
-
-
-
-/* Style for delete button */
-.delete-button {
-  background-color: #dc3545;
-  color: #fff;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 3px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.delete-button:hover {
-  background-color: #c82333;
-}
-
-/* RecipeStyle.css */
-
-/* Existing styles for other elements... */
-
+.delete-button,
 .add-to-favorites-button {
-  background-color: #007bff; /* Blue color, you can change this to your preferred color */
-  color: #fff; /* Text color */
+  padding: 10px;
   border: none;
-  padding: 5px 10px;
-  margin-top: 10px;
-  margin-left: 5px;
   border-radius: 5px;
+  background-color: #dc3545; /* Red color for delete button */
+  color: #fff;
   cursor: pointer;
-  font-size: 16px;
+  margin-top: 10px;
 }
 
+.delete-button:hover,
 .add-to-favorites-button:hover {
-  background-color: #0056b3; /* Darker blue color on hover */
+  background-color: #c82333; /* Darker red for delete button hover */
 }
 
-.no-recipes{
-  margin-top: 5rem;
+/* Style for filter select dropdown */
+.filter-select {
+  margin-left: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
 }
-
-/* Adjust the styles as needed to match your design preferences */
-
-
-/* Responsive Styles */
-
-/* For devices with a screen width between 320px and 480px */
-@media (min-width: 320px) and (max-width: 768px) {
-  .Recipes {
-    gap: 10px; /* Adjust the gap as needed for smaller screens */
-  }
-
-  .Recipe {
-    width: 100%; /* Make recipe cards occupy full width */
-  }
-}
-
-
-
-
-/* For laptops and larger screens */
-@media (min-width: 992px) {
-  .Recipes {
-    gap: 40px;
-  }
-
-  .Recipe {
-    width: calc(33.33% - 40px); /* Three columns with 40px gap */
-  }
-}
-
-/* For larger screens (adjust as needed) */
-@media (min-width: 1200px) {
-  .Recipes {
-    gap: 50px;
-  }
-
-  .Recipe {
-    width: calc(30% - 50px); /* Four columns with 50px gap */
-  }
-}
-
-

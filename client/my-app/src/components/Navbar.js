@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,19 +25,21 @@ const Navbar = () => {
   const handleToggleMenu = () => {
     setIsOpen(false);
   };
+   
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <nav>
+    <div className="navbar-container">
+      <nav className="green-navbar">
         <div className="nav-left">
           <FontAwesomeIcon
             icon={faBars}
             className="hamburger-icon"
             onClick={toggleMenu}
-            style={isOpen ? { transform: "rotate(90deg)" } : {}}
+            style={isOpen ? { transform: "rotate(90deg)", transition: "transform 0.3s ease" } : { transition: "transform 0.3s ease" }}
           />
 
-          <h2>Recipe Sharing App</h2>
+          <h2 onClick={()=>navigate("/")}>Savour It!!</h2>
         </div>
         <div className={`nav-right ${isOpen ? "open" : ""}`}>
           <ul>

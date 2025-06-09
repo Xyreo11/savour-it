@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500&family=Poppins:wght@300&family=Roboto:wght@500;700&family=Source+Code+Pro:ital@1&display=swap');
+@import url('http://fonts.googleapis.com/css2?family=Nunito:wght@500&family=Poppins:wght@300&family=Roboto:wght@500;700&family=Source+Code+Pro:ital@1&display=swap');
 
 *{
   margin: 0;
@@ -72,7 +72,7 @@ body{
 
 /* Navbar container */
 nav {
-  background-color: #333;
+  background-color: #24cd2f;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -182,4 +182,19 @@ nav .nav-left {
     margin: 0.5rem;
     text-align: center;
   }
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+}
+.ribbon.veg {
+  background-color: green;
+}
+.ribbon.non-veg {
+  background-color: red;
 }

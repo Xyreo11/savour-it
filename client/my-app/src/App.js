@@ -10,6 +10,7 @@ import LikedProducts from "./components/likedProducts";
 import ForgotPassword from "./components/ForgotPassword";
 
 function App() {
+  
   return (
     <Router>
       <Navbar />

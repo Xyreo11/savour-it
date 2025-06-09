@@ -1,15 +1,22 @@
+const LikedRecipe = require("../Schema/LikedRecipeSchema");
 const Recipe = require("../Schema/RecipeSchema");
-const Liked = require("../Schema/LikedRecipeSchema");
 
 const createRecipe = async (req, res) => {
   try {
-    const { title, ingredients, instructions, imageUrl } = req.body;
+    const { title, description, ingredients, instructions, imageUrl, filter } = req.body;
+
+    if (!filter || !["veg", "non-veg"].includes(filter)) {
+      return res.status(400).json({ error: "Filter must be either 'veg' or 'non-veg'" });
+    }
 
     const newRecipe = await Recipe.create({
       title,
+      description,
       ingredients,
       instructions,
       imageUrl,
+      filter,
+      userId: req.token._id, // Ensure userId is passed correctly
     });
 
     res.status(201).json(newRecipe);
@@ -22,7 +29,6 @@ const createRecipe = async (req, res) => {
 const getAllRecipes = async (req, res) => {
   try {
     const allRecipes = await Recipe.find();
-
     res.status(200).json(allRecipes);
   } catch (error) {
     console.error(error);
@@ -32,17 +38,20 @@ const getAllRecipes = async (req, res) => {
 
 const deleteRecipe = async (req, res) => {
   try {
-    const recipeId = req.params.id;
+    const { id } = req.params;
+    const recipe = await Recipe.findById(id);
 
-    const deletedRecipe = await Recipe.deleteOne({ _id: recipeId });
-
-    if (!deletedRecipe.deletedCount) {
+    if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
     }
 
-    const recipes = await Recipe.find();
+    // Check if the user is the creator of the recipe
+    if (recipe.userId.toString() !== req.token._id) {
+      return res.status(403).json({ error: "You are not authorized to delete this recipe" });
+    }
 
-    res.status(200).json({ message: "Recipe deleted successfully", recipes });
+    await Recipe.findByIdAndDelete(id);
+    res.status(200).json({ message: "Recipe deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -50,60 +59,62 @@ const deleteRecipe = async (req, res) => {
 };
 
 const LikedList = async (req, res) => {
-  try {
-    // Find the recipe by ID in the database
-    let recipe = await Recipe.findOne({ _id: req.params.id });
+  try { 
+    const { id } = req.params; // Recipe ID
+    const recipe = await Recipe.findById(id);
+    console.log("Hi")
+    console.log(`Existing recipe id: ${recipe._id}`);
+    console.log(`User id: ${req.userId}`);
+    
 
-    // Check if the recipe exists in the user's favorites
-    const existingFavorite = await Liked.findOne({ title: recipe.title });
-
-    if (existingFavorite) {
-      // Recipe already exists in favorites
-      return res
-        .status(400)
-        .json({ error: "Recipe already exists in your favorites" });
-    } else {
-      // Create a new favorite recipe entry
-      const { title, instructions, imageUrl, ingredients } = recipe;
-      const newFavorite = await Liked.create({
-        title,
-        instructions,
-        imageUrl,
-        ingredients,
-      });
-
-      // Respond with the newly added favorite recipe
-      return res.status(201).json({ favoriteRecipe: newFavorite });
+    if (!recipe) {
+      return res.status(404).json({ error: "Recipe not found" });
     }
-  } catch (error) {
-    // Handle any errors that occur during the process
-    console.error("Error in Liked:", error);
-    return res.status(500).json({ error: "An internal server error occurred" });
-  }
-};
 
-const getAllLikedRecipes = async (req, res) => {
-  try {
-    const allLikedRecipes = await Liked.find();
+    // Check if the recipe is already in the user's favorites
+    const existingLikedRecipe = await LikedRecipe.findOne({ 
+      recipe_obj_id: recipe._id, // Use the new `recipe_obj_id` field
+      userId: req.userId
+    });
+    console.log(req.userId);
+    
+    if (existingLikedRecipe) {
+      return res.status(400).json({ error: "Recipe already exists in your favorites" });
+    }
 
-    res.status(200).json(allLikedRecipes);
+    const likedRecipe = await LikedRecipe.create({
+      title: recipe.title,
+      description: recipe.description,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      imageUrl: recipe.imageUrl,
+      filter: recipe.filter,
+      userId: req.token._id,
+      recipe_obj_id: recipe._id, // Save the original Recipe `_id`
+    });
+
+    res.status(201).json(likedRecipe);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
+const getAllLikedRecipes = async (req, res) => {
+  try {
+    const likedRecipes = await LikedRecipe.find({ userId: req.token._id });
+    res.status(200).json(likedRecipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 const removeFromLikedRecipes = async (req, res) => {
   try {
-    const recipeId = req.params.id;
-
-    // Find and delete the liked recipe by ID
-    const deletedLikedRecipe = await Liked.deleteOne({ _id: recipeId });
-
-    if (!deletedLikedRecipe.deletedCount) {
-      return res.status(404).json({ error: "Liked recipe not found" });
-    }
-
+    const { id } = req.params;
+    await LikedRecipe.findOneAndDelete({ recipeId: id, userId: req.token._id });
     res.status(200).json({ message: "Recipe removed from liked recipes" });
   } catch (error) {
     console.error(error);
@@ -112,34 +123,22 @@ const removeFromLikedRecipes = async (req, res) => {
 };
 
 const searchRecipes = async (req, res) => {
-  const searchKey = req.params.key;
-
   try {
-    // Use a case-insensitive regular expression to search for recipes by title
-    const recipes = await Recipe.find({
-      title: { $regex: new RegExp(searchKey, "i") },
-    });
-
-    // If no matching recipes found, return a meaningful message
-    if (recipes.length === 0) {
-      return res.status(404).json({ message: "No recipes found" });
-    }
-
-    // If matching recipes found, return them in the response
+    const { key } = req.params;
+    const recipes = await Recipe.find({ title: { $regex: key, $options: "i" } });
     res.status(200).json(recipes);
   } catch (error) {
-    // Handle any server error and return a proper error response
-    console.error("Error searching recipes:", error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
 module.exports = {
-  getAllRecipes,
   createRecipe,
+  getAllRecipes,
   deleteRecipe,
-  getAllLikedRecipes,
   LikedList,
+  getAllLikedRecipes,
   removeFromLikedRecipes,
   searchRecipes,
 };

@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import "../App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
+import {  useNavigate } from "react-router-dom";
 
 const Register = () => {
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showError, setShowError] = useState(false); // State to control the error message visibility
   const Email = email.toLowerCase();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -20,14 +23,14 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://recipe-app-mern.onrender.com/auth/register",
+        "http://localhost:5000/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email: Email, password }),
         }
       );
-
+      
       if (response.ok) {
         const user = await response.json();
 
@@ -36,9 +39,14 @@ const Register = () => {
         } else {
           toast.success("Registration successful.");
           localStorage.setItem("token", user.token);
+
           setTimeout(() => {
-            window.location.href = "/";
-          }, 4000);
+            navigate("/login"); // Navigate to the login page after a successful registration
+          }, 1000);
+
+          // setTimeout(() => {
+          //   window.location.href = "/";
+          // }, 4000);
         }
       } else {
         console.error("Failed to register user:", response.status);
@@ -46,6 +54,7 @@ const Register = () => {
     } catch (error) {
       toast.error("An error occurred while registering user:", error);
     }
+    
   };
 
   return (

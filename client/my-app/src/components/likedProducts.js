@@ -1,108 +1,85 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/likedProducts.css";
-import { toast, ToastContainer } from "react-toastify";
 
 const LikedProducts = () => {
   const [likedProducts, setLikedProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // To handle loading state
+  const [error, setError] = useState(null); // To handle errors
 
   useEffect(() => {
-    // Call the async function to fetch liked products when the component mounts
     fetchLikedProducts();
   }, []);
 
   const fetchLikedProducts = async () => {
     try {
-      // Make a GET request to the /api/liked-products endpoint
-      const response = await fetch(
-        "https://recipe-app-mern.onrender.com/auth/likedRecipes"
-      );
+      setLoading(true); // Show loading while fetching data
+      const token = localStorage.getItem("token");
 
-      if (!response.ok) {
-        toast.error("Failed to fetch liked products");
+      if (!token) {
+        setError("User not logged in.");
+        setLoading(false);
+        return;
       }
 
-      const data = await response.json();
+      const response = await fetch(`http://localhost:5000/auth/likedRecipes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`, // Ensure the token is correctly formatted
+        },
+      });
 
-      // Set the fetched data to the state
-      setLikedProducts(data);
-    } catch (error) {
-      toast.error("Error fetching liked products:", error);
-    }
-  };
-
-  const handleRemoveItem = async (recipeId) => {
-    try {
-      if (
-        window.confirm(
-          "Are you sure you wanna remove this recipe from favourites??"
-        )
-      ) {
-        const response = await fetch(
-          `https://recipe-app-mern.onrender.com/auth/removeLiked/${recipeId}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (response.ok) {
-          toast.success("Item Removed successfully");
-          fetchLikedProducts();
-          setTimeout(() => {
-            window.location.href = "/favouriteRecipes";
-          }, 4000);
-        } else {
-          const data = await response.json();
-          toast.error(data.error);
-        }
+      if (response.ok) {
+        const data = await response.json();
+        setLikedProducts(data);
+        setError(null); // Clear any previous errors
       } else {
-        window.location.href = "/favouriteRecipes";
+        const errorData = await response.json();
+        setError(errorData.message || "Failed to fetch liked products.");
       }
     } catch (error) {
-      toast.error("Error removing item from liked products:", error);
+      console.error("An error occurred while fetching liked products:", error);
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false); // Hide loading after fetch completes
     }
   };
 
   return (
     <div className="likedRecipes">
-      <h2>Favourites</h2>
-      <ul>
-        {likedProducts.map((product) => (
-          <li key={product._id} className="list">
-            <div>
+      <h2>Liked Recipes</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="error">{error}</p>
+      ) : likedProducts.length > 0 ? (
+        <ul>
+          {likedProducts.map((product) => (
+            <li key={product._id} >
               <h3>{product.title}</h3>
               <p>{product.description}</p>
-              <img src={product.imageUrl} alt={product.title} />
-              <h4>Ingredients:</h4>
-              <ul>
-                {product.ingredients.length > 0 && (
-                  <ul className="ingredients-list">
-                    {product.ingredients.map((ingredient, index) => (
-                      <li key={index}>{ingredient}</li>
-                    ))}
-                  </ul>
-                )}
-              </ul>
-
-              <div className="instructions-container">
-                <h4>Instructions:</h4>
-                <div className="instructions-list">
-                  {product.instructions.split("\n").map((step, index) => (
-                    <p key={index}>{step}</p>
-                  ))}
+              {product.imageUrl && (
+                <div className="imgcont">
+                <img src={product.imageUrl} alt={product.title} />
                 </div>
-              </div>
-
-              <button
-                className="remove-item-button"
-                onClick={() => handleRemoveItem(product._id)}
-              >
-                Remove Item
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <ToastContainer />
+             
+                
+              )}
+              <ol className="inglist">
+                {product.ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ol>
+              <p>Type: {product.filter}</p>
+              <div className="
+              rect"></div>
+              <br></br> <br></br> <br></br>
+            </li>
+          ))}
+       
+        </ul>
+      ) : (
+        <p>No liked recipes found</p>
+      )}
     </div>
   );
 };

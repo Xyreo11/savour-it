@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import "../styles/Addrecipe.css";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
+import "react-toastify/dist/ReactToastify.css";
 
 const AddRecipe = () => {
   const [recipe, setRecipe] = useState({
     title: "",
+    description: "",
     ingredients: [""],
     instructions: "",
     imageUrl: "",
+    filter: "",
   });
 
   const handleInputChange = (e) => {
@@ -20,61 +22,49 @@ const AddRecipe = () => {
   };
 
   const handleAddIngredient = () => {
-    const lastIngredient = recipe.ingredients[recipe.ingredients.length - 1];
-    if (lastIngredient !== "") {
-      setRecipe({
-        ...recipe,
-        ingredients: [...recipe.ingredients, ""],
-      });
-    }
-  };
-
-  const handleIngredientChange = (index, value) => {
-    const updatedIngredients = [...recipe.ingredients];
-    updatedIngredients[index] = value;
     setRecipe({
       ...recipe,
-      ingredients: updatedIngredients,
+      ingredients: [...recipe.ingredients, ""],
+    });
+  };
+
+  const handleIngredientChange = (e, index) => {
+    const newIngredients = recipe.ingredients.map((ingredient, i) =>
+      i === index ? e.target.value : ingredient
+    );
+    setRecipe({
+      ...recipe,
+      ingredients: newIngredients,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Send a POST request to add the recipe to the server
-
-    const nonEmptyIngredients = recipe.ingredients.filter(
-      (ingredient) => ingredient.trim() !== ""
-    );
-
-    if (nonEmptyIngredients.length === 0) {
-      toast.warn("Please provide at least one non-empty ingredient.");
-      return;
-    }
-
     try {
-      const response = await fetch(
-        "https://recipe-app-mern.onrender.com/auth/recipe",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(recipe),
-        }
-      );
+      const response = await fetch("http://localhost:5000/auth/recipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(recipe),
+      });
 
       if (response.ok) {
-        // Recipe added successfully, you can show a success message or redirect to another page
         toast.success("Recipe added successfully");
-
-        setTimeout(() => {
-          window.location.href = "/recipes";
-        }, 4000);
+        setRecipe({
+          title: "",
+          description: "",
+          ingredients: [""],
+          instructions: "",
+          imageUrl: "",
+          filter: "",
+        });
       } else {
-        toast.error("Failed to add recipe:", response.status);
+        toast.error("Failed to add recipe");
       }
     } catch (error) {
-      toast.error("An error occurred while adding the recipe:", error);
+      toast.error("An error occurred while adding the recipe");
     }
   };
 
@@ -82,49 +72,61 @@ const AddRecipe = () => {
     <div className="add-recipe">
       <h2>Add Recipe</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
+        <label>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={recipe.title}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Description:</label>
+        <textarea
+          name="description"
+          value={recipe.description}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Ingredients:</label>
+        {recipe.ingredients.map((ingredient, index) => (
           <input
+            key={index}
             type="text"
-            name="title"
-            value={recipe.title}
-            onChange={handleInputChange}
+            value={ingredient}
+            onChange={(e) => handleIngredientChange(e, index)}
+            required
           />
-        </div>
-        <div>
-          <label>Ingredients:</label>
-          {recipe.ingredients.map((ingredient, index) => (
-            <input
-              type="text"
-              key={index}
-              value={ingredient}
-              onChange={(e) => handleIngredientChange(index, e.target.value)}
-            />
-          ))}
-          <button type="button" onClick={handleAddIngredient}>
-            Add Ingredient
-          </button>
-        </div>
-        <div>
-          <label>Instructions:</label>
-          <textarea
-            name="instructions"
-            value={recipe.instructions}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Image URL:</label>
-          <input
-            type="text"
-            name="imageUrl"
-            value={recipe.imageUrl}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <button type="submit">Add Recipe</button>
-        </div>
+        ))}
+        <button type="button" onClick={handleAddIngredient}>
+          Add Ingredient
+        </button>
+        <label>Instructions:</label>
+        <textarea
+          name="instructions"
+          value={recipe.instructions}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Image URL:</label>
+        <input
+          type="text"
+          name="imageUrl"
+          value={recipe.imageUrl}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Filter:</label>
+        <select
+          name="filter"
+          value={recipe.filter}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Select</option>
+          <option value="veg">Veg</option>
+          <option value="non-veg">Non-Veg</option>
+        </select>
+        <button type="submit">Add Recipe</button>
       </form>
       <ToastContainer />
     </div>

@@ -28,9 +28,9 @@
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) installed (v14 or higher).
-- [MongoDB](https://www.mongodb.com/) installed and running locally or on a remote server.
-- [Git](https://git-scm.com/) for version control.
+- [Node.js](http://nodejs.org/) installed (v14 or higher).
+- [MongoDB](http://www.mongodb.com/) installed and running locally or on a remote server.
+- [Git](http://git-scm.com/) for version control.
 - A text editor or integrated development environment (IDE) of your choice (e.g., Visual Studio Code).
 
 ## Getting Started
@@ -38,7 +38,7 @@
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Rohith-Manjunath/MERN-Recipe-App.git
+   git clone http://github.com/Rohith-Manjunath/MERN-Recipe-App.git
 
 2. Navigate to the project directory:
 
@@ -102,5 +102,5 @@ The project follows a standard MERN stack folder structure:
 
 ## Live Demo
 
-Check out the live demo of the Recipe Sharing Full Stack App [here](https://benevolent-donut-65e579.netlify.app).
+Check out the live demo of the Recipe Sharing Full Stack App [here](http://benevolent-donut-65e579.netlify.app).
 

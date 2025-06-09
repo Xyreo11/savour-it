@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.URI)
+  .connect("mongodb://localhost:27017/recipe")
   .then(() => {
     console.log("Connected to the database");
   })

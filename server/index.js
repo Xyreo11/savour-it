@@ -29,7 +29,7 @@ router.get("/", verifyToken, Home.Home);
 module.exports = router;
 
 if (config) {
-  app.listen(process.env.PORT, () => {
-    console.log(`Server Started on port ${process.env.PORT}`);
+  app.listen(5000, () => {
+    console.log(`Server Started on port 5000`);
   });
 }

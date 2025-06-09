@@ -1,100 +1,233 @@
-/* LikedProducts.css */
+/* LikedProducts.css - Elegant and Distinct Card Design */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
 
 .likedRecipes {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    margin-top: 8rem !important;
+  max-width: 1000px;
+   margin: 8rem auto 0;
+  /*padding: 30px; */
+  background-color: #f0f4f8;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  font-family: 'Playfair Display', serif;
+}
 
-  }
-  
-  .likedRecipes h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .likedRecipes ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .likedRecipes .list {
-    margin-bottom: 30px;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .likedRecipes h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .likedRecipes p {
-    font-size: 16px;
-    color: #777;
-    margin-bottom: 10px;
-  }
-  
-  .likedRecipes img {
-    max-width: 100%;
-    height: auto;
-    margin-top: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .likedRecipes h4 {
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  
-  .likedRecipes ul.liked-product-ingredients {
-    list-style-type: disc;
-    margin-left: 20px;
-  }
-  
-  .likedRecipes ul.liked-product-ingredients li {
-    font-size: 16px;
-  }
-  
-  .likedRecipes ol.liked-product-instructions {
-    list-style-type: decimal;
-    margin-left: 20px;
-  }
-  
-  .likedRecipes ol.liked-product-instructions li {
-    font-size: 16px;
-  }
-  
-  
-  
-  /* RecipeStyle.css */
+.likedRecipes h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  text-align: center;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  padding: 30px;
+}
 
-/* Add styles for the remove item button */
-.remove-item-button {
-  background-color: #ff5c5c; /* Red background color */
-  color: white; /* White text color */
-  border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+.likedRecipes .list {
+  background-color: #ffffff;
+  margin-bottom: 25px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 30px;
+}
+
+.likedRecipes .list:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  
+}
+
+.likedRecipes h3 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #34495e;
+  text-align: center;
+  padding: 30px;
+}
+
+.likedRecipes p {
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  color: #2c3e50;
+  line-height: 1.6;
+  font-family: 'Playfair Display', serif;
+  padding: 30px;
+}
 
-  /* Hover effect */
-  &:hover {
-    background-color: #ff0000; /* Darker red on hover */
+.inglist {
+  padding: 25px;
+  margin-bottom: 25px;
+  background-color: #ffffff;
+}
+
+.imgcont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.likedRecipes img {
+  max-width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  margin: 15px 0;
+  transition: transform 0.3s ease;
+  padding: 30px;
+}
+
+.likedRecipes img:hover {
+  transform: scale(1.02);
+}
+ul{
+  list-style-type: none;
+}
+.likedRecipes h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+  padding: 30px;
+}
+.rect{
+  height: 50px;
+  width: 10000px;
+  background-color: #d4d8d8;
+  margin: 0px;
+  padding:0px;
+}
+.likedRecipes ul.liked-product-ingredients,
+.likedRecipes ol.liked-product-instructions {
+  margin: 15px 0;
+  padding-left: 30px;
+  font-size: 16px;
+  color: #34495e;
+  line-height: 1.7;
+}
+
+.likedRecipes ul.liked-product-ingredients li,
+.likedRecipes ol.liked-product-instructions li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 15px;
+}
+
+.likedRecipes ul.liked-product-ingredients li::before,
+.likedRecipes ol.liked-product-instructions li::before {
+  content: '•';
+  color: #3498db;
+  font-weight: bold;
+  position: absolute;
+  left: -15px;
+}
+
+/* Remove Button Styling */
+.remove-item-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  align-self: center;
+  margin-top: 15px;
+}
+
+.remove-item-button:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .likedRecipes {
+    padding: 20px;
+    margin-top: 5rem;
+  }
+
+  .likedRecipes h2 {
+    font-size: 2.5rem;
+  }
+
+  .likedRecipes h3 {
+    font-size: 2rem;
+  }
+
+  .likedRecipes img {
+    height: 250px;
   }
 }
 
-.instructions-list li {
-  margin-bottom: 8px; /* Adjust the value as needed to control the spacing */
+@media (max-width: 480px) {
+  .likedRecipes {
+    margin-top: 4rem;
+    padding: 15px;
+  }
+
+  .likedRecipes h2 {
+    font-size: 2rem;
+  }
+
+  .likedRecipes h3 {
+    font-size: 1.8rem;
+  }
+
+  .likedRecipes img {
+    height: 200px;
+  }
+}
+/* Recipe Card Styles */
+.recipe-card {
+  background-color: #f1fdf7; /* Light green background for a cooking theme */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Darker shadow on hover */
+}
+
+/* Header and Description */
+.recipe-card h3 {
+  font-size: 24px;
+  color: #2d5b36; /* Dark green color for the header */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.recipe-card p {
+  font-size: 16px;
+  color: #4b6e41; /* Slightly lighter green for text */
+  line-height: 1.5;
+}
+
+/* Image Styling */
+.imgcont {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.recipe-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }

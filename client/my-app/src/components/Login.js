@@ -19,7 +19,7 @@ const Login = () => {
 
     try {
       let response = await fetch(
-        "https://recipe-app-mern.onrender.com/auth/login",
+        "http://localhost:5000/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -35,7 +35,7 @@ const Login = () => {
 
         setTimeout(() => {
           window.location.href = "/";
-        }, 4000);
+        }, 1000);
       } else {
         toast.error(response.error);
       }

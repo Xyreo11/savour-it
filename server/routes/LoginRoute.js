@@ -14,7 +14,7 @@ function verifyToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, "secret");
     req.token = decoded;
     next();
   } catch (error) {
@@ -23,3 +23,5 @@ function verifyToken(req, res, next) {
 }
 
 module.exports = router;
+
+
